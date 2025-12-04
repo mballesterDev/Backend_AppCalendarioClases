@@ -1,0 +1,9 @@
+
+{% load account %}
+{% load i18n %}
+
+Mensaje de parte del equipo técnico
+
+Muchas gracias por utilizar nuestros servicios, para confirmar su cuenta siga el siguiente enlace
+
+{{ activate_url }}

@@ -1,0 +1,49 @@
+# Python
+*.pyc
+__pycache__/
+*.pyo
+*.pyd
+.Python
+
+# Django
+db.sqlite3
+db.sqlite3-journal
+*.log
+media/
+staticfiles/
+
+# Entorno virtual
+venv/
+env/
+.venv/
+Lib/
+Scripts/
+pyvenv.cfg
+Include/
+
+# Variables de entorno
+.env
+.env.local
+.env.*.local
+
+# Node
+node_modules/
+package-lock.json
+tailwind.config.js
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*.sublime-*
+
+# Sistema
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Archivos personales
+*.bak
+*.tmp
+*~

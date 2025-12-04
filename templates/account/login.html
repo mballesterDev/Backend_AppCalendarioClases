@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load allauth account %}
+{% load form_tags %}
+
+{% block head_title %}
+    {% trans "Sign In" %}
+{% endblock head_title %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-8 col-lg-5">
+            <div class="bg-white p-4 ">
+                <h4 class="text-center mb-4">
+                    {% trans "Sign In" %}
+                </h4>
+
+                {% if form.non_field_errors %}
+                    <div class="text-center mb-4">
+                        {% for error in form.non_field_errors %}
+                            <p ><strong>{{ error }}</strong> </p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                <form method="post" action="{% url 'account_login' %}">
+                    {% csrf_token %}
+                    {{ redirect_field }}
+                    
+                    <!-- Campo de nombre de usuario/email -->
+                    <div class="mb-3">
+                        <label for="{{ form.login.id_for_label }}" class="form-label">
+                            {{ form.login.label }}{% if form.login.field.required %} <span class="text-danger">*</span>{% endif %}
+                        </label>
+                        {{ form.login|add_class:"form-control" }}
+                        {% if form.login.errors %}
+                            <div class="text-danger mt-1">
+                                {{ form.login.errors }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Campo de contraseña -->
+                    <div class="mb-3">
+                        <label for="{{ form.password.id_for_label }}" class="form-label">
+                            {{ form.password.label }}{% if form.password.field.required %} <span class="text-danger">*</span>{% endif %}
+                        </label>
+                        {{ form.password|add_class:"form-control" }}
+                        {% if form.password.errors %}
+                            <div class="text-danger mt-1">
+                                {{ form.password.errors }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="text-center mt-4">
+                        <button type="submit" class="btn btn-primary">
+                            {% trans "Sign In" %}
+                        </button>
+                    </div>
+
+                    <p class="text-center mt-4">
+                        {% blocktrans %}Si no tiene una cuenta creada, créela aquí <a href="{{ signup_url }}" class="text-decoration-underline text-primary mx-2">Sign up first</a>{% endblocktrans %}
+                    </p>
+
+                    <p class="text-center">Si has olvidado la contraseña de tu cuenta, puedes ir a <a class="text-decoration-underline text-primary" href="{% url 'account_reset_password' %}">restablecerla</a>.</p>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+{% block extra_body %}
+    {{ block.super }}
+    {% if PASSKEY_LOGIN_ENABLED %}
+    <div id="g_id_onload"
+    data-client_id="398949145533-op5njkk91s88uqketa6c588u029cupph.apps.googleusercontent.com"
+    data-login_uri="{% url 'socialaccount_login' %}?process=login"></div>
+    </div>
+
+    {% include "mfa/webauthn/snippets/login_script.html" with button_id="passkey_login" %}
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load allauth %}
+{% load form_tags %}
+
+{% block head_title %}
+    {% trans "Sign Up" %}
+{% endblock head_title %}
+
+{% block content %}
+<div class="container mx-auto my-5">
+    <div class="row justify-content-center">
+        <div class="col-10 col-md-6 col-lg-3">
+            <div >
+                <div class=" text-dark mt-4">
+                    <h4 class="card-title text-center">{% trans "Sign Up" %}</h4>
+                </div>
+                <div class="mt-4">
+                    {% if not SOCIALACCOUNT_ONLY %}
+                        {% url 'account_signup' as action_url %}
+                        <form method="post" action="{{ action_url }}" class="needs-validation" novalidate>
+                            {% csrf_token %}
+                            
+                            <!-- Campos del formulario -->
+                            <div class="mb-3">
+                                {% for field in form %}
+                                    <div class="form-group mb-2">
+                                        {{ field|add_class:"form-control mb-3" }}
+                                        {% if field.errors %}
+                                            <div class="text-danger">
+                                                {{ field.errors }}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                {% endfor %}
+                                {{ redirect_field }}
+                            </div>
+                            
+                            <!-- Botón de envío -->
+                            <button type="submit" class="btn btn-primary btn-block w-100">
+                                {% trans "Sign Up" %}
+                            </button>
+                        </form>
+                    {% endif %}
+                    <p class="mt-4">{% blocktrans %}Already have an account? Then please <a class="text-decoration-underline text-primary " href="{{ login_url }}">sign in</a>.{% endblocktrans %}</p>
+                  
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% if SOCIALACCOUNT_ENABLED %}
+        <div class="mt-4">
+            {% include "socialaccount/snippets/login.html" with page_layout="entrance" %}
+        </div>
+    {% endif %}
+</div>
+{% endblock content %}
